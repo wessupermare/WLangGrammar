@@ -4,8 +4,8 @@
 	"fileTypes": [
 		"w"
 	],
-	"foldingStartMarker": "[s*$",
-	"foldingStopMarker": "^s*]",
+	"foldingStartMarker": "(?m)^.*[$",
+	"foldingStopMarker": "(?m)^].*$",
 	"patterns": [
 		{
 			"name": "comment.line.question-mark.wlang",
@@ -19,20 +19,20 @@
 		},
 		{
 			"name": "constant.numeric.wlang",
-			"match": "\bd+\b"
+			"match": "[0-9]+"
 		},
 		{
 			"name": "constant.language.boolean.true.wlang",
-			"match": "(?i)\bTrue\b"
+			"match": "(?i)[^0-9A-Za-z_]True[^0-9A-Za-z_]"
 		},
 		{
 			"name": "constant.language.boolean.false.wlang",
-			"match": "(?i)\bFalse\b"
+			"match": "(?i)[^0-9A-Za-z_]False[^0-9A-Za-z_]"
 		},
 		{
 			"name": "meta.function.wlang",
-			"begin": "(?i)\b(?:(Public)s)?(Func)s([a-zA-Z][_a-zA-Z0-9]*)s*[",
-			"begincaptures": {
+			"match": "(?i)(?:(Public)[^0-9A-Za-z_])?(Func)[^0-9A-Za-z_]([a-zA-Z][_a-zA-Z0-9]*)[^0-9A-Za-z_]",
+			"captures": {
 				"1": {
 					"name": "storage.type.function.wlang"
 				},
@@ -42,28 +42,47 @@
 				"3": {
 					"name": "entity.name.function.wlang"
 				}
-			},
-			"end": "]"
+			}
 		},
 		{
-			"name": "keyword.control.break.wlang",
-			"match": "(?i)\bEscape\b"
+			"match": "(?i)(?:^|[^0-9A-Za-z_])(Escape)[^0-9A-Za-z_]",
+			"captures": {
+				"1": {
+					"name": "keyword.control.break.wlang"
+				}
+			}
 		},
 		{
-			"name": "keyword.control.return.wlang",
-			"match": "(?i)\bReturn\b"
+			"match": "(?i)(?:^|[^0-9A-Za-z_])(Return)[^0-9A-Za-z_]",
+			"captures": {
+				"1": {
+					"name": "keyword.control.return.wlang"
+				}
+			}
 		},
 		{
-			"name": "keyword.control.if.wlang",
-			"match": "(?i)\bIf\b"
+			"match": "(?i)(?:^|[^0-9A-Za-z_])(If)[^0-9A-Za-z_]",
+			"captures": {
+				"1": {
+					"name": "keyword.control.if.wlang"
+				}
+			}
 		},
 		{
-			"name": "keyword.control.loop.wlang",
-			"match": "(?i)\bRepeat\b"
+			"match": "(?i)(?:^|[^0-9A-Za-z_])(Repeat)[^0-9A-Za-z_]",
+			"captures": {
+				"1": {
+					"name": "keyword.control.loop.wlang"
+				}
+			}
 		},
 		{
-			"name": "keyword.operator.logical.wlang",
-			"match": "(?i)\b(?:And|Or|Not)\b"
+			"match": "(?i)[^0-9A-Za-z_](And|Or|Not)[^0-9A-Za-z_]",
+			"captures": {
+				"1": {
+					"name": "keyword.operator.logical.wlang"
+				}
+			}
 		},
 		{
 			"name": "keyword.operator.bitwise.wlang",
@@ -98,7 +117,7 @@
 			"end": "'"
 		},
 		{
-			"match": "(?i)\b(args)(?:.|\b)",
+			"match": "(?i)(?:^|[^0-9A-Za-z_])(args)[^0-9A-Za-z_]",
 			"captures": {
 				"1": {
 					"name": "variable.parameter.wlang"
@@ -114,25 +133,31 @@
 			"match": "#"
 		},
 		{
-			"match": "(?i)\bItems([a-zA-Z][_a-zA-Z0-9]*)(?:s(=))\b",
+			"match": "(?i)(?:^|[^0-9A-Za-z_])(Item)[^0-9A-Za-z_]([a-zA-Z][_a-zA-Z0-9]*)(?:[^0-9A-Za-z_]?(=))?",
 			"captures": {
 				"1": {
-					"name": "variable.other.wlang"
+					"name": "storage.type.var.wlang"
 				},
 				"2": {
+					"name": "variable.other.wlang"
+				},
+				"3": {
 					"name": "keyword.operator.assignment.wlang"
 				}
 			}
 		},
 		{
 			"name": "meta.import.wlang",
-			"match": "(?i)^(REF)s['\"][a-zA-Z][_a-zA-Z0-9]*['\"](?:,s['\"][a-zA-Z][_a-zA-Z0-9]*)['\"]*(?:s(FROM)s['\"][a-zA-Z][_a-zA-Z0-9]*['\"])?$",
+			"match": "(?i)^(REF)[^0-9A-Za-z_]['\"][a-zA-Z][_a-zA-Z0-9]*['\"](?:,[^0-9A-Za-z_]['\"][a-zA-Z][_a-zA-Z0-9]*['\"])*(?:[^0-9A-Za-z_](FROM)[^0-9A-Za-z_](['\"][a-zA-Z][_a-zA-Z0-9]*['\"]))?$",
 			"captures": {
 				"1": {
 					"name": "keyword.other.import.wlang"
 				},
 				"2": {
 					"name": "keyword.other.from.wlang"
+				},
+				"3": {
+					"name": "entity.name.type.wlang"
 				}
 			}
 		},
@@ -156,6 +181,22 @@
 					"match": "=>"
 				}
 			]
+		},
+		{
+			"match": "(?i)[^0-9A-Za-z_.]([a-zA-Z][_a-zA-Z]*)[(]",
+			"captures": {
+				"1": {
+					"name": "entity.name.function.wlang"
+				}
+			}
+		},
+		{
+			"match": "(?i)[.]([a-zA-Z][_a-zA-Z]*)[(]",
+			"captures": {
+				"1": {
+					"name": "entity.name.tag.wlang"
+				}
+			}
 		}
 	]
 }
